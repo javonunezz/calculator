@@ -101,7 +101,7 @@ function App() {
         <div
           className={`${theme.bg_2} w-5/6 h-24 mt-6 rounded-xl truncate font-league-spartan px-5 pt-5 pb-4 text-4xl flex items-center justify-end ${theme.text_color} font-semibold`}
         >
-          {valueCalculator ? valueCalculator : "Syntax Error"}
+          {valueCalculator ? valueCalculator : 0}
         </div>
         <div
           className={`${theme.bg_3} w-5/6 mt-6 h-3/5 gap-3 rounded-xl inline-grid grid-cols-4 p-4`}

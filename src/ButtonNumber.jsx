@@ -1,3 +1,32 @@
+function DEL(value) {
+  if (value.length === 1) return "0";
+  const currentValue = value.slice(0, value.length - 1);
+  return currentValue;
+}
+
+function operator(currentValue, newValue, SYMBOLS) {
+  if (SYMBOLS.includes(currentValue[currentValue.length - 1]))
+    return currentValue;
+  if (newValue === "x") return currentValue + "*";
+  return currentValue + newValue;
+}
+
+function operatorSame(currentValue, SYMBOLS) {
+  try {
+    let result = "0";
+    if (SYMBOLS.includes(currentValue[currentValue.length - 1])) {
+      result = parseFloat(
+        Number(eval(currentValue.slice(0, currentValue.length - 1))).toFixed(3)
+      );
+      return result;
+    }
+    result = parseFloat(Number(eval(currentValue)).toFixed(3));
+    return result.toString();
+  } catch (error) {
+    return "0";
+  }
+}
+
 export const ButtonNumber = ({
   value = "0",
   colorButton = "bg-white-200",
@@ -10,29 +39,21 @@ export const ButtonNumber = ({
   sizeMD = "md:text-4xl",
 }) => {
   const handleClick = () => {
-    switch (value) {
-      case "DEL":
-        setValueCalculator(
-          valueCalculator.slice(1, valueCalculator.length - 1)
-        );
-        break;
-      case "RESET":
-        setValueCalculator("0");
-        break;
-      case "x":
-        setValueCalculator(`${valueCalculator} * `);
-        break;
-      case "=":
-        setValueCalculator(
-          parseFloat(Number(eval(valueCalculator)).toFixed(3))
-        );
-        break;
-      default:
-        if (valueCalculator.length === 1 && valueCalculator === "0") {
-          setValueCalculator(value);
-        } else {
-          setValueCalculator(valueCalculator + value);
-        }
+    const SYMBOLS = ["x", "+", "-", "/", "*"];
+    if (value === "DEL") {
+      setValueCalculator(DEL(valueCalculator));
+    } else if (value === "RESET") {
+      setValueCalculator("0");
+    } else if (SYMBOLS.includes(value)) {
+      setValueCalculator(operator(valueCalculator, value, SYMBOLS));
+    } else if (value === "=") {
+      setValueCalculator(operatorSame(valueCalculator, SYMBOLS));
+    } else {
+      if (valueCalculator.length === 1 && valueCalculator === "0") {
+        setValueCalculator(value);
+      } else {
+        setValueCalculator(valueCalculator + value);
+      }
     }
   };
 
